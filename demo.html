@@ -1,0 +1,138 @@
+<!doctype>
+
+<html>
+<head>
+<script type = "text/javascript" src = "http://difractal.com/js/jquery.js"></script>
+<script type = "text/javascript">
+var BiHashMap = function () {
+    var hashmap_keys = [];
+  var hashmap_values = [];
+    return {
+        Add: function (key, value) { 
+		    if(hashmap_keys[key]) {
+			   console.warn("Add failed. Key already exists in map. Delete the key first");
+			   return false;
+			}
+            hashmap_keys[key] = value;
+            if (!hashmap_values[value]) {
+                hashmap_values[value] = [];
+            }
+              hashmap_values[value][key] = true;
+
+            return true;
+        },
+        ContainsValue: function (value) {
+            if (hashmap_values[value]) {
+                return true;
+            }
+            return false;
+        },
+        ContainsKey: function (key) {
+            if (hashmap_keys[key]) {
+                return true;
+            }
+            return false;
+        },
+  
+		DeleteByKey: function (key) {
+		  var value =  hashmap_keys[key];
+                delete hashmap_values[value];
+                delete hashmap_keys[key];
+		},
+		DeleteByValue: function (value) {
+
+                for(var x in hashmap_values[value]) {
+                  delete hashmap_keys[x];
+                }
+		  
+                delete hashmap_values[value];
+
+	      },
+        GetValueFromKey: function(key) {
+           return hashmap_keys[key];
+        },
+        GetKeysFromValue: function(value) {
+          return hashmap_values[value];
+       },
+        GetKeyToValueMap: function () {
+            return hashmap_keys;
+        },
+        GetValueToKeyMap: function () {
+            return hashmap_values;
+        }
+        //.....add the rest of your object definition 
+    }
+
+}
+
+$(document).ready(function(){
+var bhm = new BiHashMap();
+  $("#add").click(function(){
+     var key = $("#key").val();
+     var value = $("#value").val();
+     
+  if(bhm.Add(key,value)) {
+     console.log("Added: KEY: " +  key + " VALUE: " + value);    
+   }
+  });
+  $("#delete-key").click(function(){
+     var key = $("#key").val();
+     if(bhm.ContainsKey(key)){
+       bhm.DeleteByKey(key);
+       console.log("DELETED KEY: " + key);
+     }
+  });
+  $("#delete-value").click(function(){
+     var value = $("#value").val();
+     if(bhm.ContainsValue(value)){
+       bhm.DeleteByValue(value);
+       console.log("DELETED VALUE: " + value);
+     }
+  });
+  $("#has-key").click(function(){
+     var key = $("#key").val();
+     console.log(bhm.ContainsKey(key));
+  });
+  $("#has-value").click(function(){
+     var value = $("#value").val();
+     console.log(bhm.ContainsValue(value));
+  });
+  $("#get-map").click(function(){
+      console.log({"key-to-value-map" : bhm.GetKeyToValueMap() , "value-to-key-map" : bhm.GetValueToKeyMap()});
+      
+  });
+});
+
+
+
+
+</script>
+
+
+</head>
+
+<body>
+         <div id = 'funzone-container'>
+  	   
+		   <div id = 'input-fields' style = 'margin-top:50px;'>
+			   <div>
+					<label>Key</label>
+					<input type = "text" id = "key" value = "200"></input>
+			   </div>
+			   <div>
+					<label>Value</label>
+					<input type = "text" id = "value" value = "200"></input>
+			   </div>
+                           <button id = "add">Add Key-Value Pair</button>
+                           <button id = "delete-key">Delete Key</button>
+                           <button id = "delete-value">Delete Value</button>
+                           <button id = "has-key">Has Key?</button>
+                           <button id = "has-value">Has Value?</button>
+                           <button id = "get-map">Get Map</button>
+
+		   </div>
+	   </div>
+</body>
+
+
+</html>
