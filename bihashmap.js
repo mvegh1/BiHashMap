@@ -1,6 +1,6 @@
 var BiHashMap = function () {
     var hashmap_keys = [];
-  var hashmap_values = [];
+	var hashmap_values = [];
     return {
         Add: function (key, value) { 
 		    if(hashmap_keys[key]) {
@@ -11,7 +11,7 @@ var BiHashMap = function () {
             if (!hashmap_values[value]) {
                 hashmap_values[value] = [];
             }
-              hashmap_values[value].push(key);
+              hashmap_values[value][key] = true;
 
             return true;
         },
@@ -27,25 +27,21 @@ var BiHashMap = function () {
             }
             return false;
         },
-            //This function should be re-written for efficiency
-		Delete: function (key) {
-		  delete hashmap_keys[key];
-		  var deleteValue = true;
-		  for(var x in hashmap_values) {
-		  deleteValue = true;
-		     for(var y in hashmap_values[x]) {
-			    if(hashmap_values[x][y] == key) {
-				   delete hashmap_values[x][y];
-				} 
-				else if(deleteValue){
-				  deleteValue = false;
-				}
-			 }
-			 if(deleteValue) {
-			    delete hashmap_values[x];
-			 }
-		  }
+  
+		DeleteByKey: function (key) {
+		  var value =  hashmap_keys[key];
+                delete hashmap_values[value];
+                delete hashmap_keys[key];
 		},
+		DeleteByValue: function (value) {
+
+                for(var x in hashmap_values[value]) {
+                  delete hashmap_keys[x];
+                }
+		  
+                delete hashmap_values[value];
+
+	      },
         GetValueFromKey: function(key) {
            return hashmap_keys[key];
         },
