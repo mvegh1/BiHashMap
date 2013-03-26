@@ -1,17 +1,17 @@
 var BiHashMap = function () {
     var hashmap_keys = [];
-	var hashmap_values = [];
+    var hashmap_values = [];
     return {
-        Add: function (key, value) { 
-		    if(hashmap_keys[key]) {
-			   console.warn("Add failed. Key already exists in map. Delete the key first");
-			   return false;
-			}
+        Add: function (key, value) {
+            if (hashmap_keys[key]) {
+                console.warn("Add failed. Key already exists in map. Delete the key first");
+                return false;
+            }
             hashmap_keys[key] = value;
             if (!hashmap_values[value]) {
                 hashmap_values[value] = [];
             }
-              hashmap_values[value][key] = true;
+            hashmap_values[value][key] = true;
 
             return true;
         },
@@ -27,27 +27,27 @@ var BiHashMap = function () {
             }
             return false;
         },
-  
-		DeleteByKey: function (key) {
-		  var value =  hashmap_keys[key];
-                delete hashmap_values[value];
-                delete hashmap_keys[key];
-		},
-		DeleteByValue: function (value) {
 
-                for(var x in hashmap_values[value]) {
-                  delete hashmap_keys[x];
-                }
-		  
-                delete hashmap_values[value];
-
-	      },
-        GetValueFromKey: function(key) {
-           return hashmap_keys[key];
+        DeleteByKey: function (key) {
+            var value = hashmap_keys[key];
+            delete hashmap_values[value];
+            delete hashmap_keys[key];
         },
-        GetKeysFromValue: function(value) {
-          return hashmap_values[value];
-       },
+        DeleteByValue: function (value) {
+
+            for (var x in hashmap_values[value]) {
+                delete hashmap_keys[x];
+            }
+
+            delete hashmap_values[value];
+
+        },
+        GetValueFromKey: function (key) {
+            return hashmap_keys[key];
+        },
+        GetKeysFromValue: function (value) {
+            return hashmap_values[value];
+        },
         GetKeyToValueMap: function () {
             return hashmap_keys;
         },
