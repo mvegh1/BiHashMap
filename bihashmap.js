@@ -30,13 +30,24 @@ var BiHashMap = function () {
 
         DeleteByKey: function (key) {
             var value = hashmap_keys[key];
-            delete hashmap_values[value];
+            var deleteValue = true;
+            delete hashmap_values[value][key];
+            for(var x in hashmap_values[value]){
+                if(x){
+                    deleteValue = false;
+                    break;
+                }
+            }
+            if(deleteValue){
+                delete hashmap_values[value];
+            }
+            
             delete hashmap_keys[key];
         },
         DeleteByValue: function (value) {
 
-            for (var x in hashmap_values[value]) {
-                delete hashmap_keys[x];
+            for (var key in hashmap_values[value]) {
+                delete hashmap_keys[key];
             }
 
             delete hashmap_values[value];
